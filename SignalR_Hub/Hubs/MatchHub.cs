@@ -26,5 +26,11 @@ namespace SignalR_Hub.Hubs
             await Clients.Others.SendAsync("ReceivePlayByPlay");
             return _listMatchPbP.Dequeue();
         }
+
+        public async Task ClearQueue()
+        {
+            await Clients.Others.SendAsync("ClearQueue");
+            _listMatchPbP.Clear();
+        }
     }
 }
