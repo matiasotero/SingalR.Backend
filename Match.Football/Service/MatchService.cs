@@ -22,6 +22,38 @@ namespace Match.Football.Service
             _listPbPMatch = InicializeList();
         }
         
+        /// <summary>
+        /// Ejecuta el partido de demostración
+        /// </summary>
+        /// <returns></returns>
+        public async Task PlayMatch()
+        {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            foreach (var item in _listPbPMatch)
+            {
+                item.ActionType = "action";
+                item.ShotClock = watch.Elapsed.ToString("mm\\:ss\\:ff");
+
+                await StartConnectionHub();
+
+
+                
+                await Task.Delay(5000);
+
+                var result = await _connectionHub.InvokeAsync<MatchPbP>("ReceivePlayByPlay");
+                var json = JsonConvert.SerializeObject(result);
+                Console.WriteLine(json);
+            }
+
+            Console.WriteLine("Partido de prueba finalizado!");
+        }
+
+        #region Helpers
+        /// <summary>
+        /// Inicializa lista genérica de objetos para el partido de demostración
+        /// </summary>
+        /// <returns></returns>
         private List<MatchPbP> InicializeList()
         {
             List<MatchPbP> list = new List<MatchPbP>() {
@@ -254,42 +286,37 @@ namespace Match.Football.Service
             };
             return list;
         }
-
-        public async Task PlayMatch()
+        /// <summary>
+        /// Inicializa la conexión con el Hub de SingnalR
+        /// </summary>
+        /// <returns></returns>
+        private async Task StartConnectionHub()
         {
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-            foreach (var item in _listPbPMatch)
+            try
             {
-                item.ActionType = "action";
-                item.ShotClock = watch.Elapsed.ToString("mm\\:ss\\:ff");
-                try
-                {
-                    await _connectionHub.StartAsync();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Ocurrió un error: {ex.Message}");
-                }
-
-
-                try
-                {
-                    await _connectionHub.InvokeAsync("SendPlayByPlay",
-                        item);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Ocurrió un error: {ex.Message}");
-                }
-                await Task.Delay(100);
-
-                var result = await _connectionHub.InvokeAsync<MatchPbP>("ReceivePlayByPlay");
-                var json = JsonConvert.SerializeObject(result);
-                Console.WriteLine(json);
+                await _connectionHub.StartAsync();
             }
-
-            Console.WriteLine("Partido de prueba finalizado!");
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ocurrió un error: {ex.Message}");
+            }
         }
+        /// <summary>
+        /// Envía los mensajes al Hub configurado
+        /// </summary>
+        /// <param name="matchPbP"></param>
+        /// <returns></returns>
+        private async Task SendMessageHub(MatchPbP matchPbP)
+        {
+            try
+            {
+                await _connectionHub.InvokeAsync("SendPlayByPlay", matchPbP);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ocurrió un error: {ex.Message}");
+            }
+        }
+        #endregion
     }
 }
