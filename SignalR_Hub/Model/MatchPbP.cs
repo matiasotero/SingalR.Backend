@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SignalR_Backend.Model
+namespace SignalR_Hub.Model
 {
     public class MatchPbP
     {
-        [JsonProperty("playerName")]
+        [JsonProperty("playername")]
         public string PlayerName { get; set; }
 
         [JsonProperty("period")]
@@ -38,8 +38,8 @@ namespace SignalR_Backend.Model
         [JsonProperty("score1")]
         public string Score1 { get; set; }
 
-        [JsonProperty("won")]
-        public string Won { get; set; }
+        [JsonProperty("subtype")]
+        public string SubType { get; set; }
 
         [JsonProperty("timeActual")]
         public string TimeActual { get; set; }
@@ -56,7 +56,13 @@ namespace SignalR_Backend.Model
         [JsonProperty("clock")]
         public string Clock { get; set; }
 
-        [JsonProperty("jumpball")]
-        public string Jumpball { get; set; }
+        [JsonProperty("actionType")]
+        public string ActionType { get; set; }
+
+        [JsonProperty("area")]
+        public string Area { get; set; }
+
+        [JsonProperty("qualifiers")]
+        public string Qualifiers { get; set; }
     }
 }
