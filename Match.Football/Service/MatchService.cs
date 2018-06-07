@@ -37,7 +37,7 @@ namespace Match.Football.Service
 
                 await StartConnectionHub();
 
-
+                await SendMessageHub(item);
                 
                 await Task.Delay(5000);
 

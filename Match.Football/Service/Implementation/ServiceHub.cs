@@ -14,8 +14,9 @@ namespace Match.Football.Service.Implementation
         HubConnection _connection;
         public HubConnection ConfigurationService()
         {
+            var url = ConfigurationManager.AppSettings["urlSignalR"];
             _connection = new HubConnectionBuilder()
-               .WithUrl(ConfigurationManager.AppSettings["urlSignalR"])
+               .WithUrl(url)
                .Build();
             return _connection;
         }
