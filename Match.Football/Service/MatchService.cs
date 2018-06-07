@@ -32,14 +32,14 @@ namespace Match.Football.Service
             watch.Start();
             foreach (var item in _listPbPMatch)
             {
-                item.ActionType = "action";
+                item.Type = "action";
                 item.ShotClock = watch.Elapsed.ToString("mm\\:ss\\:ff");
 
                 await StartConnectionHub();
 
                 await SendMessageHub(item);
                 
-                await Task.Delay(5000);
+                await Task.Delay(10000);
 
                 var result = await _connectionHub.InvokeAsync<MatchPbP>("ReceivePlayByPlay");
                 var json = JsonConvert.SerializeObject(result);

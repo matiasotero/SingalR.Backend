@@ -40,7 +40,7 @@ namespace SignalR_Hub
             }
             app.UseSignalR(routes =>
             {
-                routes.MapHub<MatchHub>("/matchpbp");
+                routes.MapHub<matchHub>("/matchpbp");
             });
 
             app.UseMvc();

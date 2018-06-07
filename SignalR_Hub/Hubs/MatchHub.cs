@@ -7,10 +7,10 @@ using SignalR_Hub.Model;
 
 namespace SignalR_Hub.Hubs
 {
-    public class MatchHub: Hub
+    public class matchHub: Hub
     {
         private static Queue<MatchPbP> _listMatchPbP;
-        static MatchHub()
+        static matchHub()
         {
             _listMatchPbP = new Queue<MatchPbP>();
         }
