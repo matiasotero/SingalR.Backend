@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Match.Football", "Match.Football\Match.Football.csproj", "{C6D6D639-32FA-464F-8912-31F9D13D39E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalR_Hub", "SignalR_Hub\SignalR_Hub.csproj", "{44CA5C94-D4FD-4BF5-BEFA-AE8FBCD42559}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalR_Hub", "SignalR_Hub\SignalR_Hub.csproj", "{44CA5C94-D4FD-4BF5-BEFA-AE8FBCD42559}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalR_Backend_2", "SignalR_Backend_2\SignalR_Backend_2.csproj", "{669E4385-086F-4FA0-A71F-7F426C91823A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{44CA5C94-D4FD-4BF5-BEFA-AE8FBCD42559}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44CA5C94-D4FD-4BF5-BEFA-AE8FBCD42559}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44CA5C94-D4FD-4BF5-BEFA-AE8FBCD42559}.Release|Any CPU.Build.0 = Release|Any CPU
+		{669E4385-086F-4FA0-A71F-7F426C91823A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{669E4385-086F-4FA0-A71F-7F426C91823A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{669E4385-086F-4FA0-A71F-7F426C91823A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{669E4385-086F-4FA0-A71F-7F426C91823A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

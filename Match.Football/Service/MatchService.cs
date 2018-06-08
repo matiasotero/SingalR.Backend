@@ -6,19 +6,23 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using Microsoft.AspNetCore.SignalR.Client;
 using Match.Football.Service.Interface;
+using Microsoft.AspNet.SignalR.Client;
+using Microsoft.AspNet.SignalR.Client.Hubs;
+using Match.Football.Service.Implementation;
 
 namespace Match.Football.Service
 {
     public class MatchService
     {
         private List<MatchPbP> _listPbPMatch;
+        private IHubProxy _connectionProxyHub;
         private HubConnection _connectionHub;
 
         public MatchService(IServiceHub connection)
         {
-            _connectionHub = connection.ConfigurationService();
+            _connectionHub = connection.Connection;
+            _connectionProxyHub = connection.HubConnectionProxy;
             _listPbPMatch = InicializeList();
         }
         
@@ -28,22 +32,32 @@ namespace Match.Football.Service
         /// <returns></returns>
         public async Task PlayMatch()
         {
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-            foreach (var item in _listPbPMatch)
+            try
             {
-                item.Type = "action";
-                item.ShotClock = watch.Elapsed.ToString("mm\\:ss\\:ff");
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
 
                 await StartConnectionHub();
+                //foreach (var item in _listPbPMatch)
+                //{
+                //    item.Type = "action";
+                //    item.ShotClock = watch.Elapsed.ToString("mm\\:ss\\:ff");
 
-                await SendMessageHub(item);
-                
-                await Task.Delay(10000);
 
-                var result = await _connectionHub.InvokeAsync<MatchPbP>("ReceivePlayByPlay");
-                var json = JsonConvert.SerializeObject(result);
-                Console.WriteLine(json);
+                //    await SendMessageHub(item);
+
+                //    await Task.Delay(10000);
+                //    if (_connectionHub.State == ConnectionState.Connected)
+                //    {
+                //        var result = await _connectionProxyHub.Invoke<MatchPbP>("ReceivePlayByPlay");
+                //        var json = JsonConvert.SerializeObject(result);
+                //        Console.WriteLine(json);
+                //    }
+                //}
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ocurrió un error en la ejecución del partido: {ex.Message}");
             }
 
             Console.WriteLine("Partido de prueba finalizado!");
@@ -294,11 +308,15 @@ namespace Match.Football.Service
         {
             try
             {
-                await _connectionHub.StartAsync();
+                _connectionHub.Start().Wait(5000);
+            }
+            catch(HttpClientException ex)
+            {
+                Console.WriteLine($"Ocurrió un de conexión: {ex.InnerException}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ocurrió un error: {ex.Message}");
+                Console.WriteLine($"Ocurrió un error: {ex.InnerException}");
             }
         }
         /// <summary>
@@ -310,7 +328,10 @@ namespace Match.Football.Service
         {
             try
             {
-                await _connectionHub.InvokeAsync("SendPlayByPlay", matchPbP);
+                if (_connectionHub.State == ConnectionState.Connected)
+                {
+                    await _connectionProxyHub.Invoke("SendPlayByPlay", matchPbP);
+                }
             }
             catch (Exception ex)
             {

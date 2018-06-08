@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR;
-using Microsoft.AspNetCore.SignalR.Client;
 using Match.Football.Service.Implementation;
 
 namespace Match.Football
